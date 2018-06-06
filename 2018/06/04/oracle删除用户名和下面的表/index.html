@@ -83,18 +83,18 @@
 
 
 
-<meta name="description" content="今天删除用户和他下面的表，还有表空间，所以需要重新创建一个用户的表空间">
+<meta name="description" content="项目的备份数据库有较多的数据有问题，所以需要将用户表和下面的数据全部删除，然后倒入新的dmp文件。因此进行了今天的测试，但是删除用户的时候发现了一点问题，删除失败，后来发现是连接的问题，再此做了笔记。">
 <meta name="keywords" content="DBA">
 <meta property="og:type" content="article">
-<meta property="og:title" content="创建用户，表空间">
-<meta property="og:url" content="http://yoursite.com/2018/06/04/创建用户，表空间/index.html">
+<meta property="og:title" content="删除用户名和下面的表">
+<meta property="og:url" content="http://yoursite.com/2018/06/04/oracle删除用户名和下面的表/index.html">
 <meta property="og:site_name" content="道术高深的博客">
-<meta property="og:description" content="今天删除用户和他下面的表，还有表空间，所以需要重新创建一个用户的表空间">
+<meta property="og:description" content="项目的备份数据库有较多的数据有问题，所以需要将用户表和下面的数据全部删除，然后倒入新的dmp文件。因此进行了今天的测试，但是删除用户的时候发现了一点问题，删除失败，后来发现是连接的问题，再此做了笔记。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-06-04T07:18:50.697Z">
+<meta property="og:updated_time" content="2018-06-06T02:55:35.503Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="创建用户，表空间">
-<meta name="twitter:description" content="今天删除用户和他下面的表，还有表空间，所以需要重新创建一个用户的表空间">
+<meta name="twitter:title" content="删除用户名和下面的表">
+<meta name="twitter:description" content="项目的备份数据库有较多的数据有问题，所以需要将用户表和下面的数据全部删除，然后倒入新的dmp文件。因此进行了今天的测试，但是删除用户的时候发现了一点问题，删除失败，后来发现是连接的问题，再此做了笔记。">
 
 
 
@@ -124,13 +124,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/06/04/创建用户，表空间/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/06/04/oracle删除用户名和下面的表/"/>
 
 
 
 
 
-  <title>创建用户，表空间 | 道术高深的博客</title>
+  <title>删除用户名和下面的表 | 道术高深的博客</title>
   
 
 
@@ -268,7 +268,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/04/创建用户，表空间/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/04/oracle删除用户名和下面的表/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="HighTaoism">
@@ -285,7 +285,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">创建用户，表空间</h1>
+          <h1 class="post-title" itemprop="name headline">删除用户名和下面的表</h1>
         
 
         <div class="post-meta">
@@ -297,7 +297,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-06-04T14:55:22+08:00">
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-06-04T14:09:23+08:00">
                 2018-06-04
               </time>
             
@@ -344,7 +344,7 @@
 
           
               <div class="post-description">
-                  今天删除用户和他下面的表，还有表空间，所以需要重新创建一个用户的表空间
+                  项目的备份数据库有较多的数据有问题，所以需要将用户表和下面的数据全部删除，然后倒入新的dmp文件。因此进行了今天的测试，但是删除用户的时候发现了一点问题，删除失败，后来发现是连接的问题，再此做了笔记。
               </div>
           
 
@@ -361,14 +361,12 @@
       
 
       
-        <h2 id="新建表空间"><a href="#新建表空间" class="headerlink" title="新建表空间"></a>新建表空间</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">tablespace</span> IOTDATA <span class="keyword">datafile</span> <span class="string">'/oradata/iot/iotdata01.dbf'</span> <span class="keyword">size</span> <span class="number">16</span>G <span class="keyword">AUTOEXTEND</span> <span class="keyword">OFF</span>;</span><br></pre></td></tr></table></figure>
-<p>备注：<br><br>datafile 表空间地址和名称<br><br>size 表空间大小<br><br>AUTOEXTEND OFF代表不自动增加，ON表示自动增加，我们需要设置OFF，防止系统由于表空间过大，撑爆空间。这就需要做好系统的监控了<br></p>
-<h2 id="表空间不足时，扩大表空间"><a href="#表空间不足时，扩大表空间" class="headerlink" title="表空间不足时，扩大表空间"></a>表空间不足时，扩大表空间</h2><p>我们可以通过查询语句来查询表空间使用率，来判定是否需要增加表空间，如果大于90%，就需要增加了。下面是查看表空间使用率的命令：<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> t.tablespace_name <span class="keyword">name</span>,</span><br><span class="line">       TO_CHAR(NVL(d.bytes / <span class="number">1024</span> / <span class="number">1024</span>, <span class="number">0</span>), <span class="string">'99,999,990.900'</span>) Size_M,</span><br><span class="line">       TO_CHAR(NVL(d.bytes - NVL(f.bytes, <span class="number">0</span>), <span class="number">0</span>) / <span class="number">1024</span> / <span class="number">1024</span>, <span class="string">'99999999.999'</span>) || <span class="string">'/'</span> || TO_CHAR(NVL(d.bytes / <span class="number">1024</span> / <span class="number">1024</span>, <span class="number">0</span>), <span class="string">'99999999.999'</span>) Used_M,</span><br><span class="line">       TO_CHAR(NVL((d.bytes - NVL(f.bytes, <span class="number">0</span>)) / d.bytes * <span class="number">100</span>, <span class="number">0</span>), <span class="string">'990.00'</span>) || <span class="string">'%'</span> Used</span><br><span class="line">  <span class="keyword">from</span> dba_tablespaces t,</span><br><span class="line">       (<span class="keyword">select</span> tablespace_name, <span class="keyword">sum</span>(<span class="keyword">bytes</span>) <span class="keyword">bytes</span></span><br><span class="line">          <span class="keyword">from</span> dba_data_files</span><br><span class="line">         <span class="keyword">group</span> <span class="keyword">by</span> tablespace_name) d,</span><br><span class="line">       (<span class="keyword">select</span> tablespace_name, <span class="keyword">sum</span>(<span class="keyword">bytes</span>) <span class="keyword">bytes</span></span><br><span class="line">          <span class="keyword">from</span> dba_free_space</span><br><span class="line">         <span class="keyword">group</span> <span class="keyword">by</span> tablespace_name) f</span><br><span class="line"> <span class="keyword">where</span> t.tablespace_name = d.tablespace_name(+)</span><br><span class="line">   <span class="keyword">and</span> t.tablespace_name = f.tablespace_name(+)</span><br><span class="line">   <span class="keyword">and</span> <span class="keyword">not</span> (t.extent_management <span class="keyword">like</span> <span class="string">'LOCAL'</span> <span class="keyword">and</span> t.contents <span class="keyword">like</span> <span class="string">'TEMPORARY'</span>)</span><br><span class="line"><span class="keyword">union</span> all</span><br><span class="line"><span class="keyword">select</span> d.tablespace_name <span class="keyword">name</span>,</span><br><span class="line">       TO_CHAR(NVL(a.bytes / <span class="number">1024</span> / <span class="number">1024</span>, <span class="number">0</span>), <span class="string">'99,999,990.900'</span>) Size_M,</span><br><span class="line">       TO_CHAR(NVL(t.bytes, <span class="number">0</span>) / <span class="number">1024</span> / <span class="number">1024</span>, <span class="string">'99999999.999'</span>) || <span class="string">'/'</span> || TO_CHAR(NVL(a.bytes / <span class="number">1024</span> / <span class="number">1024</span>, <span class="number">0</span>), <span class="string">'99999999.999'</span>) Used_M,</span><br><span class="line">       TO_CHAR(NVL(t.bytes / a.bytes * <span class="number">100</span>, <span class="number">0</span>), <span class="string">'990.00'</span>) || <span class="string">'%'</span> Used</span><br><span class="line">  <span class="keyword">from</span> dba_tablespaces d,</span><br><span class="line">       (<span class="keyword">select</span> tablespace_name, <span class="keyword">sum</span>(<span class="keyword">bytes</span>) <span class="keyword">bytes</span></span><br><span class="line">          <span class="keyword">from</span> dba_temp_files</span><br><span class="line">         <span class="keyword">group</span> <span class="keyword">by</span> tablespace_name) a,</span><br><span class="line">       (<span class="keyword">select</span> tablespace_name, <span class="keyword">sum</span>(bytes_cached) <span class="keyword">bytes</span></span><br><span class="line">          <span class="keyword">from</span> v$temp_extent_pool</span><br><span class="line">         <span class="keyword">group</span> <span class="keyword">by</span> tablespace_name) t</span><br><span class="line"> <span class="keyword">where</span> d.tablespace_name = a.tablespace_name(+)</span><br><span class="line">   <span class="keyword">and</span> d.tablespace_name = t.tablespace_name(+)</span><br><span class="line">   <span class="keyword">and</span> d.extent_management <span class="keyword">like</span> <span class="string">'LOCAL'</span></span><br><span class="line">   <span class="keyword">and</span> d.contents <span class="keyword">like</span> <span class="string">'TEMPORARY'</span></span><br><span class="line"> <span class="keyword">order</span> <span class="keyword">by</span> <span class="number">4</span> <span class="keyword">desc</span>;</span><br></pre></td></tr></table></figure></p>
-<p>或是查询命令<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">SELECT</span> AA.Tablespace_Name, Sumb <span class="keyword">AS</span> Totle_MB, Suma <span class="keyword">AS</span> Free_MB,(Sumb - Suma) <span class="keyword">AS</span> Used_MB, <span class="keyword">ROUND</span>((Sumb - Suma) / Sumb * <span class="number">100</span>, <span class="number">2</span>) <span class="keyword">AS</span> Used_Percent</span><br><span class="line"> <span class="keyword">FROM</span> (<span class="keyword">SELECT</span> DFS.Tablespace_Name, <span class="keyword">ROUND</span>((<span class="keyword">SUM</span>(DFS.Bytes) / <span class="number">1024</span> / <span class="number">1024</span>), <span class="number">2</span>) <span class="keyword">AS</span> Suma</span><br><span class="line">    <span class="keyword">FROM</span> DBA_FREE_SPACE DFS</span><br><span class="line">   <span class="keyword">GROUP</span> <span class="keyword">BY</span> DFS.Tablespace_Name) AA,</span><br><span class="line"> (<span class="keyword">SELECT</span> DDF.Tablespace_Name, <span class="keyword">ROUND</span>((<span class="keyword">SUM</span>(DDF.Bytes) / <span class="number">1024</span> / <span class="number">1024</span>), <span class="number">2</span>) <span class="keyword">AS</span> Sumb</span><br><span class="line">    <span class="keyword">FROM</span> DBA_DATA_FILES DDF</span><br><span class="line">   <span class="keyword">GROUP</span> <span class="keyword">BY</span> DDF.Tablespace_Name) BB</span><br><span class="line"><span class="keyword">WHERE</span> AA.Tablespace_Name = BB.Tablespace_Name  <span class="keyword">ORDER</span> <span class="keyword">BY</span> Used_Percent <span class="keyword">DESC</span> ;</span><br></pre></td></tr></table></figure></p>
-<p>查看表空间的dbf路径，保证增加的dbf文件名称和地址是一致的，通过以下命令<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">select</span></span><br><span class="line">b.file_name,</span><br><span class="line">b.tablespace_name,</span><br><span class="line">b.bytes/<span class="number">1024</span>/<span class="number">1024</span>,</span><br><span class="line">(b.bytes-<span class="keyword">sum</span>(nvl(a.bytes,<span class="number">0</span>)))/<span class="number">1024</span>/<span class="number">1024</span>,</span><br><span class="line"><span class="keyword">substr</span>((b.bytes-<span class="keyword">sum</span>(nvl(a.bytes,<span class="number">0</span>)))/(b.bytes)*<span class="number">100</span>,<span class="number">1</span>,<span class="number">5</span>) </span><br><span class="line"><span class="keyword">from</span> dba_free_space a,dba_data_files b</span><br><span class="line"><span class="keyword">where</span> a.file_id=b.file_id</span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span> b.tablespace_name,b.file_name,b.bytes</span><br><span class="line"><span class="keyword">order</span> <span class="keyword">by</span> b.tablespace_name;</span><br></pre></td></tr></table></figure></p>
-<p>增加表空间<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLESPACE</span> <span class="string">"IOTDATA"</span> <span class="keyword">ADD</span> <span class="keyword">DATAFILE</span> <span class="string">'/oradata/iot/iotdata02.dbf'</span> <span class="keyword">size</span> <span class="number">16</span>G <span class="keyword">AUTOEXTEND</span> <span class="keyword">OFF</span>;</span><br></pre></td></tr></table></figure></p>
-<h2 id="创建用户-赋予权限"><a href="#创建用户-赋予权限" class="headerlink" title="创建用户,赋予权限"></a>创建用户,赋予权限</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">user</span> <span class="keyword">test</span>  <span class="keyword">identified</span> <span class="keyword">by</span> test_200;</span><br><span class="line"><span class="keyword">grant</span> <span class="keyword">create</span> <span class="keyword">session</span>,<span class="keyword">create</span> <span class="keyword">table</span>,<span class="keyword">create</span> <span class="keyword">view</span>,<span class="keyword">create</span> <span class="keyword">sequence</span>,<span class="keyword">unlimited</span> <span class="keyword">tablespace</span> <span class="keyword">to</span> <span class="keyword">test</span>;  </span><br><span class="line"><span class="comment">--或则赋予DBA权限给用户</span></span><br><span class="line"><span class="keyword">grant</span> dba <span class="keyword">to</span> <span class="keyword">test</span>;</span><br></pre></td></tr></table></figure>
-<h2 id="给用户赋予默认的表空间"><a href="#给用户赋予默认的表空间" class="headerlink" title="给用户赋予默认的表空间"></a>给用户赋予默认的表空间</h2><p>alter user test default tablespace IOTDATA;  </p>
+        <h2 id="通过sqlplus登录dba用户，执行删除用户操作"><a href="#通过sqlplus登录dba用户，执行删除用户操作" class="headerlink" title="通过sqlplus登录dba用户，执行删除用户操作"></a>通过sqlplus登录dba用户，执行删除用户操作</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">conn / as sysdba</span><br><span class="line"><span class="keyword">drop</span> <span class="keyword">user</span> shiot  <span class="keyword">cascade</span>;</span><br></pre></td></tr></table></figure>
+<h2 id="发现系统报错"><a href="#发现系统报错" class="headerlink" title="发现系统报错"></a>发现系统报错</h2><p>下列是系统报错信息，后面发现是由于有用户连接了数据库，导致有连接数，无法进行删除用户的操作。<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ORA-01940: cannot <span class="keyword">drop</span> a <span class="keyword">user</span> that <span class="keyword">is</span> currently connected</span><br></pre></td></tr></table></figure></p>
+<h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><p>查找出TEST用户的连接，删除连接.(注意：用户名需要大写)<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">sid</span>,<span class="built_in">serial</span># <span class="keyword">from</span> v$<span class="keyword">session</span> <span class="keyword">where</span> username=<span class="string">'TEST'</span>;</span><br></pre></td></tr></table></figure></p>
+<p>查找出SID和SERIAL<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">       SID    SERIAL#</span><br><span class="line"><span class="comment">---------- ----------</span></span><br><span class="line">        23      61457</span><br><span class="line">        58      53549</span><br><span class="line">        80      60121</span><br><span class="line">      3419      53257</span><br><span class="line">      5750      53427</span><br><span class="line">      6874       5525</span><br></pre></td></tr></table></figure></p>
+<p>删除所有的连接，然后重新执行删除用户操作（删除了连接用上面的命令查找还是会显示没有删除，不过不影响操作）<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">system</span> <span class="keyword">kill</span> <span class="keyword">session</span> <span class="string">'6874,5525'</span>;</span><br></pre></td></tr></table></figure></p>
+<h2 id="重新创建用户"><a href="#重新创建用户" class="headerlink" title="重新创建用户"></a>重新创建用户</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">user</span> <span class="keyword">test</span>  <span class="keyword">identified</span> <span class="keyword">by</span> Test_200;</span><br><span class="line"><span class="keyword">grant</span> dba <span class="keyword">to</span> <span class="keyword">test</span>;</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -409,8 +407,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/06/04/oracle删除用户名和下面的表/" rel="next" title="删除用户名和下面的表">
-                <i class="fa fa-chevron-left"></i> 删除用户名和下面的表
+              <a href="/2018/05/31/shell脚本处理文件入库/" rel="next" title="shell脚本处理文件入库">
+                <i class="fa fa-chevron-left"></i> shell脚本处理文件入库
               </a>
             
           </div>
@@ -419,8 +417,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/06/06/ORA-01722-invalid-number/" rel="prev" title="ORA-01722:invalid number">
-                ORA-01722:invalid number <i class="fa fa-chevron-right"></i>
+              <a href="/2018/06/04/创建用户，表空间/" rel="prev" title="创建用户，表空间">
+                创建用户，表空间 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -587,7 +585,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#新建表空间"><span class="nav-text">新建表空间</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#表空间不足时，扩大表空间"><span class="nav-text">表空间不足时，扩大表空间</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建用户-赋予权限"><span class="nav-text">创建用户,赋予权限</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#给用户赋予默认的表空间"><span class="nav-text">给用户赋予默认的表空间</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#通过sqlplus登录dba用户，执行删除用户操作"><span class="nav-text">通过sqlplus登录dba用户，执行删除用户操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#发现系统报错"><span class="nav-text">发现系统报错</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解决方法"><span class="nav-text">解决方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#重新创建用户"><span class="nav-text">重新创建用户</span></a></li></ol></div>
             
 
           </div>
