@@ -72,7 +72,7 @@
 
 
 
-  <meta name="keywords" content="存储过程," />
+  <meta name="keywords" content="DBA," />
 
 
 
@@ -83,18 +83,18 @@
 
 
 
-<meta name="description" content="由于需要创建存储过程为系统做监控，由于监控的数据是月表，需要根据时间来生成表名，因此做了个笔记。">
-<meta name="keywords" content="存储过程">
+<meta name="description" content="今天删除用户和他下面的表，还有表空间，所以需要重新创建一个用户的表空间">
+<meta name="keywords" content="DBA">
 <meta property="og:type" content="article">
-<meta property="og:title" content="存储过程之创建时间表和执行">
-<meta property="og:url" content="http://yoursite.com/2018/05/31/存储过程之创建时间表和执行/index.html">
+<meta property="og:title" content="创建用户，表空间">
+<meta property="og:url" content="http://yoursite.com/2018/06/04/创建用户，表空间/index.html">
 <meta property="og:site_name" content="道术高深的博客">
-<meta property="og:description" content="由于需要创建存储过程为系统做监控，由于监控的数据是月表，需要根据时间来生成表名，因此做了个笔记。">
+<meta property="og:description" content="今天删除用户和他下面的表，还有表空间，所以需要重新创建一个用户的表空间">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-05-31T07:20:09.344Z">
+<meta property="og:updated_time" content="2018-06-04T07:18:50.697Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="存储过程之创建时间表和执行">
-<meta name="twitter:description" content="由于需要创建存储过程为系统做监控，由于监控的数据是月表，需要根据时间来生成表名，因此做了个笔记。">
+<meta name="twitter:title" content="创建用户，表空间">
+<meta name="twitter:description" content="今天删除用户和他下面的表，还有表空间，所以需要重新创建一个用户的表空间">
 
 
 
@@ -124,13 +124,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/05/31/存储过程之创建时间表和执行/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/06/04/创建用户，表空间/"/>
 
 
 
 
 
-  <title>存储过程之创建时间表和执行 | 道术高深的博客</title>
+  <title>创建用户，表空间 | 道术高深的博客</title>
   
 
 
@@ -268,7 +268,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/31/存储过程之创建时间表和执行/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/04/创建用户，表空间/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="HighTaoism">
@@ -285,7 +285,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">存储过程之创建时间表和执行</h1>
+          <h1 class="post-title" itemprop="name headline">创建用户，表空间</h1>
         
 
         <div class="post-meta">
@@ -297,8 +297,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-31T15:04:44+08:00">
-                2018-05-31
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-06-04T14:55:22+08:00">
+                2018-06-04
               </time>
             
 
@@ -344,7 +344,7 @@
 
           
               <div class="post-description">
-                  由于需要创建存储过程为系统做监控，由于监控的数据是月表，需要根据时间来生成表名，因此做了个笔记。
+                  今天删除用户和他下面的表，还有表空间，所以需要重新创建一个用户的表空间
               </div>
           
 
@@ -361,10 +361,14 @@
       
 
       
-        <h2 id="声明变量"><a href="#声明变量" class="headerlink" title="声明变量"></a>声明变量</h2><p>声明的变量是放在is和begin之间的<br><br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">m_tablename varchar2(32) := '';</span><br><span class="line">m_sql_string varchar2(2000) "='';</span><br><span class="line">m_api_sum varchar2(100) :='';</span><br></pre></td></tr></table></figure></p>
-<h2 id="组合表名称"><a href="#组合表名称" class="headerlink" title="组合表名称"></a>组合表名称</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="string">'shiot_log.api_log_'</span> || to_char(<span class="keyword">sysdate</span>, <span class="string">'yyyymm'</span>)<span class="keyword">into</span> m_tablename <span class="keyword">from</span> dual;</span><br></pre></td></tr></table></figure>
-<h2 id="组合sql"><a href="#组合sql" class="headerlink" title="组合sql"></a>组合sql</h2><p>将需要的语句组合<br><br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">m_sql_string := '<span class="keyword">select</span> <span class="keyword">COUNT</span>(<span class="number">1</span>)   <span class="keyword">from</span> <span class="string">' || m_tablename || '</span> <span class="keyword">where</span>  (<span class="keyword">sysdate</span> - <span class="number">1</span> ) &lt; log_date <span class="string">';</span></span><br></pre></td></tr></table></figure></p>
-<h2 id="执行组合的sql"><a href="#执行组合的sql" class="headerlink" title="执行组合的sql"></a>执行组合的sql</h2><p>执行组合的sql，将执行sql的结果赋给变量<br><br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">execute</span> <span class="keyword">immediate</span> m_sql_string  <span class="keyword">into</span> m_api_sum;</span><br></pre></td></tr></table></figure></p>
+        <h2 id="新建表空间"><a href="#新建表空间" class="headerlink" title="新建表空间"></a>新建表空间</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">tablespace</span> IOTDATA <span class="keyword">datafile</span> <span class="string">'/oradata/iot/iotdata01.dbf'</span> <span class="keyword">size</span> <span class="number">16</span>G <span class="keyword">AUTOEXTEND</span> <span class="keyword">OFF</span>;</span><br></pre></td></tr></table></figure>
+<p>备注：<br><br>datafile 表空间地址和名称<br><br>size 表空间大小<br><br>AUTOEXTEND OFF代表不自动增加，ON表示自动增加，我们需要设置OFF，防止系统由于表空间过大，撑爆空间。这就需要做好系统的监控了<br></p>
+<h2 id="表空间不足时，扩大表空间"><a href="#表空间不足时，扩大表空间" class="headerlink" title="表空间不足时，扩大表空间"></a>表空间不足时，扩大表空间</h2><p>我们可以通过查询语句来查询表空间使用率，来判定是否需要增加表空间，如果大于90%，就需要增加了。下面是查看表空间使用率的命令：<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> t.tablespace_name <span class="keyword">name</span>,</span><br><span class="line">       TO_CHAR(NVL(d.bytes / <span class="number">1024</span> / <span class="number">1024</span>, <span class="number">0</span>), <span class="string">'99,999,990.900'</span>) Size_M,</span><br><span class="line">       TO_CHAR(NVL(d.bytes - NVL(f.bytes, <span class="number">0</span>), <span class="number">0</span>) / <span class="number">1024</span> / <span class="number">1024</span>, <span class="string">'99999999.999'</span>) || <span class="string">'/'</span> || TO_CHAR(NVL(d.bytes / <span class="number">1024</span> / <span class="number">1024</span>, <span class="number">0</span>), <span class="string">'99999999.999'</span>) Used_M,</span><br><span class="line">       TO_CHAR(NVL((d.bytes - NVL(f.bytes, <span class="number">0</span>)) / d.bytes * <span class="number">100</span>, <span class="number">0</span>), <span class="string">'990.00'</span>) || <span class="string">'%'</span> Used</span><br><span class="line">  <span class="keyword">from</span> dba_tablespaces t,</span><br><span class="line">       (<span class="keyword">select</span> tablespace_name, <span class="keyword">sum</span>(<span class="keyword">bytes</span>) <span class="keyword">bytes</span></span><br><span class="line">          <span class="keyword">from</span> dba_data_files</span><br><span class="line">         <span class="keyword">group</span> <span class="keyword">by</span> tablespace_name) d,</span><br><span class="line">       (<span class="keyword">select</span> tablespace_name, <span class="keyword">sum</span>(<span class="keyword">bytes</span>) <span class="keyword">bytes</span></span><br><span class="line">          <span class="keyword">from</span> dba_free_space</span><br><span class="line">         <span class="keyword">group</span> <span class="keyword">by</span> tablespace_name) f</span><br><span class="line"> <span class="keyword">where</span> t.tablespace_name = d.tablespace_name(+)</span><br><span class="line">   <span class="keyword">and</span> t.tablespace_name = f.tablespace_name(+)</span><br><span class="line">   <span class="keyword">and</span> <span class="keyword">not</span> (t.extent_management <span class="keyword">like</span> <span class="string">'LOCAL'</span> <span class="keyword">and</span> t.contents <span class="keyword">like</span> <span class="string">'TEMPORARY'</span>)</span><br><span class="line"><span class="keyword">union</span> all</span><br><span class="line"><span class="keyword">select</span> d.tablespace_name <span class="keyword">name</span>,</span><br><span class="line">       TO_CHAR(NVL(a.bytes / <span class="number">1024</span> / <span class="number">1024</span>, <span class="number">0</span>), <span class="string">'99,999,990.900'</span>) Size_M,</span><br><span class="line">       TO_CHAR(NVL(t.bytes, <span class="number">0</span>) / <span class="number">1024</span> / <span class="number">1024</span>, <span class="string">'99999999.999'</span>) || <span class="string">'/'</span> || TO_CHAR(NVL(a.bytes / <span class="number">1024</span> / <span class="number">1024</span>, <span class="number">0</span>), <span class="string">'99999999.999'</span>) Used_M,</span><br><span class="line">       TO_CHAR(NVL(t.bytes / a.bytes * <span class="number">100</span>, <span class="number">0</span>), <span class="string">'990.00'</span>) || <span class="string">'%'</span> Used</span><br><span class="line">  <span class="keyword">from</span> dba_tablespaces d,</span><br><span class="line">       (<span class="keyword">select</span> tablespace_name, <span class="keyword">sum</span>(<span class="keyword">bytes</span>) <span class="keyword">bytes</span></span><br><span class="line">          <span class="keyword">from</span> dba_temp_files</span><br><span class="line">         <span class="keyword">group</span> <span class="keyword">by</span> tablespace_name) a,</span><br><span class="line">       (<span class="keyword">select</span> tablespace_name, <span class="keyword">sum</span>(bytes_cached) <span class="keyword">bytes</span></span><br><span class="line">          <span class="keyword">from</span> v$temp_extent_pool</span><br><span class="line">         <span class="keyword">group</span> <span class="keyword">by</span> tablespace_name) t</span><br><span class="line"> <span class="keyword">where</span> d.tablespace_name = a.tablespace_name(+)</span><br><span class="line">   <span class="keyword">and</span> d.tablespace_name = t.tablespace_name(+)</span><br><span class="line">   <span class="keyword">and</span> d.extent_management <span class="keyword">like</span> <span class="string">'LOCAL'</span></span><br><span class="line">   <span class="keyword">and</span> d.contents <span class="keyword">like</span> <span class="string">'TEMPORARY'</span></span><br><span class="line"> <span class="keyword">order</span> <span class="keyword">by</span> <span class="number">4</span> <span class="keyword">desc</span>;</span><br></pre></td></tr></table></figure></p>
+<p>或是查询命令<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">SELECT</span> AA.Tablespace_Name, Sumb <span class="keyword">AS</span> Totle_MB, Suma <span class="keyword">AS</span> Free_MB,(Sumb - Suma) <span class="keyword">AS</span> Used_MB, <span class="keyword">ROUND</span>((Sumb - Suma) / Sumb * <span class="number">100</span>, <span class="number">2</span>) <span class="keyword">AS</span> Used_Percent</span><br><span class="line"> <span class="keyword">FROM</span> (<span class="keyword">SELECT</span> DFS.Tablespace_Name, <span class="keyword">ROUND</span>((<span class="keyword">SUM</span>(DFS.Bytes) / <span class="number">1024</span> / <span class="number">1024</span>), <span class="number">2</span>) <span class="keyword">AS</span> Suma</span><br><span class="line">    <span class="keyword">FROM</span> DBA_FREE_SPACE DFS</span><br><span class="line">   <span class="keyword">GROUP</span> <span class="keyword">BY</span> DFS.Tablespace_Name) AA,</span><br><span class="line"> (<span class="keyword">SELECT</span> DDF.Tablespace_Name, <span class="keyword">ROUND</span>((<span class="keyword">SUM</span>(DDF.Bytes) / <span class="number">1024</span> / <span class="number">1024</span>), <span class="number">2</span>) <span class="keyword">AS</span> Sumb</span><br><span class="line">    <span class="keyword">FROM</span> DBA_DATA_FILES DDF</span><br><span class="line">   <span class="keyword">GROUP</span> <span class="keyword">BY</span> DDF.Tablespace_Name) BB</span><br><span class="line"><span class="keyword">WHERE</span> AA.Tablespace_Name = BB.Tablespace_Name  <span class="keyword">ORDER</span> <span class="keyword">BY</span> Used_Percent <span class="keyword">DESC</span> ;</span><br></pre></td></tr></table></figure></p>
+<p>查看表空间的dbf路径，保证增加的dbf文件名称和地址是一致的，通过以下命令<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">select</span></span><br><span class="line">b.file_name,</span><br><span class="line">b.tablespace_name,</span><br><span class="line">b.bytes/<span class="number">1024</span>/<span class="number">1024</span>,</span><br><span class="line">(b.bytes-<span class="keyword">sum</span>(nvl(a.bytes,<span class="number">0</span>)))/<span class="number">1024</span>/<span class="number">1024</span>,</span><br><span class="line"><span class="keyword">substr</span>((b.bytes-<span class="keyword">sum</span>(nvl(a.bytes,<span class="number">0</span>)))/(b.bytes)*<span class="number">100</span>,<span class="number">1</span>,<span class="number">5</span>) </span><br><span class="line"><span class="keyword">from</span> dba_free_space a,dba_data_files b</span><br><span class="line"><span class="keyword">where</span> a.file_id=b.file_id</span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span> b.tablespace_name,b.file_name,b.bytes</span><br><span class="line"><span class="keyword">order</span> <span class="keyword">by</span> b.tablespace_name;</span><br></pre></td></tr></table></figure></p>
+<p>增加表空间<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLESPACE</span> <span class="string">"IOTDATA"</span> <span class="keyword">ADD</span> <span class="keyword">DATAFILE</span> <span class="string">'/oradata/iot/iotdata02.dbf'</span> <span class="keyword">size</span> <span class="number">16</span>G <span class="keyword">AUTOEXTEND</span> <span class="keyword">OFF</span>;</span><br></pre></td></tr></table></figure></p>
+<h2 id="创建用户-赋予权限"><a href="#创建用户-赋予权限" class="headerlink" title="创建用户,赋予权限"></a>创建用户,赋予权限</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">user</span> <span class="keyword">test</span>  <span class="keyword">identified</span> <span class="keyword">by</span> test_200;</span><br><span class="line"><span class="keyword">grant</span> <span class="keyword">create</span> <span class="keyword">session</span>,<span class="keyword">create</span> <span class="keyword">table</span>,<span class="keyword">create</span> <span class="keyword">view</span>,<span class="keyword">create</span> <span class="keyword">sequence</span>,<span class="keyword">unlimited</span> <span class="keyword">tablespace</span> <span class="keyword">to</span> <span class="keyword">test</span>;  </span><br><span class="line"><span class="comment">--或则赋予DBA权限给用户</span></span><br><span class="line"><span class="keyword">grant</span> dba <span class="keyword">to</span> <span class="keyword">test</span>;</span><br></pre></td></tr></table></figure>
+<h2 id="给用户赋予默认的表空间"><a href="#给用户赋予默认的表空间" class="headerlink" title="给用户赋予默认的表空间"></a>给用户赋予默认的表空间</h2><p>alter user test default tablespace IOTDATA;  </p>
 
       
     </div>
@@ -392,7 +396,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/存储过程/" rel="tag"><i class="fa fa-tag"></i> 存储过程</a>
+            <a href="/tags/DBA/" rel="tag"><i class="fa fa-tag"></i> DBA</a>
           
         </div>
       
@@ -405,8 +409,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/05/16/创建逻辑卷/" rel="next" title="创建逻辑卷">
-                <i class="fa fa-chevron-left"></i> 创建逻辑卷
+              <a href="/2018/05/31/shell脚本处理文件入库/" rel="next" title="shell脚本处理文件入库">
+                <i class="fa fa-chevron-left"></i> shell脚本处理文件入库
               </a>
             
           </div>
@@ -415,8 +419,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/05/31/存储过程之游标使用/" rel="prev" title="存储过程之游标使用">
-                存储过程之游标使用 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/06/06/ORA-01722-invalid-number/" rel="prev" title="ORA-01722:invalid number">
+                ORA-01722:invalid number <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -583,7 +587,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#声明变量"><span class="nav-text">声明变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#组合表名称"><span class="nav-text">组合表名称</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#组合sql"><span class="nav-text">组合sql</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#执行组合的sql"><span class="nav-text">执行组合的sql</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#新建表空间"><span class="nav-text">新建表空间</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#表空间不足时，扩大表空间"><span class="nav-text">表空间不足时，扩大表空间</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建用户-赋予权限"><span class="nav-text">创建用户,赋予权限</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#给用户赋予默认的表空间"><span class="nav-text">给用户赋予默认的表空间</span></a></li></ol></div>
             
 
           </div>

@@ -72,6 +72,7 @@
 
 
 
+  <meta name="keywords" content="java报错," />
 
 
 
@@ -81,18 +82,19 @@
 
 
 
-<meta name="description" content="好好学习，天天向上">
-<meta name="keywords" content="linux java oracle">
-<meta property="og:type" content="website">
-<meta property="og:title" content="about">
-<meta property="og:url" content="http://yoursite.com/about/index.html">
+
+<meta name="description" content="今天系统发现了一个bug，用户通过系统界面调用方法的时候，发现这个方法有的数据能够查出来，有的数据传参的时候会报异常。然后开始查找bug原因，最后总算发现了原因。">
+<meta name="keywords" content="java报错">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ORA-01722:invalid number">
+<meta property="og:url" content="http://yoursite.com/2018/06/06/ORA-01722-invalid-number/index.html">
 <meta property="og:site_name" content="道术高深的博客">
-<meta property="og:description" content="好好学习，天天向上">
+<meta property="og:description" content="今天系统发现了一个bug，用户通过系统界面调用方法的时候，发现这个方法有的数据能够查出来，有的数据传参的时候会报异常。然后开始查找bug原因，最后总算发现了原因。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-05-10T07:01:55.350Z">
+<meta property="og:updated_time" content="2018-06-06T02:41:55.323Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="about">
-<meta name="twitter:description" content="好好学习，天天向上">
+<meta name="twitter:title" content="ORA-01722:invalid number">
+<meta name="twitter:description" content="今天系统发现了一个bug，用户通过系统界面调用方法的时候，发现这个方法有的数据能够查出来，有的数据传参的时候会报异常。然后开始查找bug原因，最后总算发现了原因。">
 
 
 
@@ -122,13 +124,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/about/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/06/06/ORA-01722-invalid-number/"/>
 
 
 
 
 
-  <title>about | 道术高深的博客</title>
+  <title>ORA-01722:invalid number | 道术高深的博客</title>
   
 
 
@@ -254,33 +256,182 @@
 
   <div id="posts" class="posts-expand">
     
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/06/ORA-01722-invalid-number/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="HighTaoism">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/user.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="道术高深的博客">
+    </span>
+
     
-    
-    <div class="post-block page">
       <header class="post-header">
 
-	<h1 class="post-title" itemprop="name headline">about</h1>
-
-
-
-</header>
-
-      
-      
-      
-      <div class="post-body">
         
         
+          <h1 class="post-title" itemprop="name headline">ORA-01722:invalid number</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-06-06T09:53:00+08:00">
+                2018-06-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
           
-        
-      </div>
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/oracle/" itemprop="url" rel="index">
+                    <span itemprop="name">oracle</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+              <div class="post-description">
+                  今天系统发现了一个bug，用户通过系统界面调用方法的时候，发现这个方法有的数据能够查出来，有的数据传参的时候会报异常。然后开始查找bug原因，最后总算发现了原因。
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
       
+
+      
+        <h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>系统调用一个方法，有的参数传过去能够正常返回数据，有的参数传过去会报错。由于系统的分布式的，服务器比较多，因此通过dubbo的provider的配置文件和tomcat的bin下面的catAlina.sh下面的配置文件对比，最后发现可以调用这个方法的服务器有8台。<br><br>没办法，只能把这些机器的日志全部打开，然后传值会报异常的数据给这个方法，最后终于发现问题报错信息：Cause:java.SQLSyntaxErrorException:ORA-01722:invalid number<br></p>
+<h2 id="问题查找原因"><a href="#问题查找原因" class="headerlink" title="问题查找原因"></a>问题查找原因</h2><p><li>1.查看报错的sql，发现没有问题。</li></p>
+<p><li>2.执行报错的sql，按照前台传的参数放入sql中，没有问题<br><br>那么问题到底是什么？没办法，这个是同事写的代码，不太清楚逻辑，只能跟代码了<br><br>发现：系统查询数据是先查找redis，若是redis服务器中没有数据的话，查找数据库，然后把之前redis没有的数据放进去。<br><br>查看代码好像没有发现问题，逻辑正常的。但是系统invalid number报错，肯定是代码的问题。部分数据传参有问题，那么查redis部分不可能有错误，否则就不会部分数据有问题了。<br><br>于是把查询数据库的部分代码copy出来，编写一个模拟传参的数据，把代码处理的最后参数打印出来<br><br>最后发现：参数的问题。本来是应该传一个org_id的数据，是number类型的，结果传的却是一个参数字符型’CUST’,oracle数据库是不能够隐式转换的，把值放在sql测试，果然是这个错误，问题终于找到。</li></p>
+
       
     </div>
     
     
     
+
+	<div>
+	  
+		<div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------the article end  <i class="fa fa-paw"></i>  thank you for you reading-------------</div>
+    
+</div>
+	  
+	</div>
+	
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/java报错/" rel="tag"><i class="fa fa-tag"></i> java报错</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/06/04/创建用户，表空间/" rel="next" title="创建用户，表空间">
+                <i class="fa fa-chevron-left"></i> 创建用户，表空间
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
   </div>
 
 
@@ -313,8 +464,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -408,6 +568,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#问题描述"><span class="nav-text">问题描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#问题查找原因"><span class="nav-text">问题查找原因</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
