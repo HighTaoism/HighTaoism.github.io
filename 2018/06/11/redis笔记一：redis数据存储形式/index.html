@@ -72,7 +72,7 @@
 
 
 
-  <meta name="keywords" content="lvm," />
+  <meta name="keywords" content="学习笔记," />
 
 
 
@@ -83,26 +83,18 @@
 
 
 
-<meta name="description" content="在linux中创建逻辑卷">
-<meta name="keywords" content="lvm">
+<meta name="description" content="对redis的AOF和RDB描述">
+<meta name="keywords" content="学习笔记">
 <meta property="og:type" content="article">
-<meta property="og:title" content="创建逻辑卷">
-<meta property="og:url" content="http://yoursite.com/2018/05/16/创建逻辑卷/index.html">
+<meta property="og:title" content="redis笔记一：redis数据存储形式">
+<meta property="og:url" content="http://yoursite.com/2018/06/11/redis笔记一：redis数据存储形式/index.html">
 <meta property="og:site_name" content="道术高深的博客">
-<meta property="og:description" content="在linux中创建逻辑卷">
+<meta property="og:description" content="对redis的AOF和RDB描述">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://yoursite.com/2018/05/16/创建逻辑卷/1.png">
-<meta property="og:image" content="http://yoursite.com/2018/05/16/创建逻辑卷/2.png">
-<meta property="og:image" content="http://yoursite.com/2018/05/16/创建逻辑卷/3.png">
-<meta property="og:image" content="http://yoursite.com/2018/05/16/创建逻辑卷/4.png">
-<meta property="og:image" content="http://yoursite.com/2018/05/16/创建逻辑卷/5.png">
-<meta property="og:image" content="http://yoursite.com/2018/05/16/创建逻辑卷/6.png">
-<meta property="og:image" content="http://yoursite.com/2018/05/16/创建逻辑卷/7.png">
-<meta property="og:updated_time" content="2018-05-16T08:22:58.389Z">
+<meta property="og:updated_time" content="2018-06-11T10:02:07.603Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="创建逻辑卷">
-<meta name="twitter:description" content="在linux中创建逻辑卷">
-<meta name="twitter:image" content="http://yoursite.com/2018/05/16/创建逻辑卷/1.png">
+<meta name="twitter:title" content="redis笔记一：redis数据存储形式">
+<meta name="twitter:description" content="对redis的AOF和RDB描述">
 
 
 
@@ -132,13 +124,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/05/16/创建逻辑卷/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/06/11/redis笔记一：redis数据存储形式/"/>
 
 
 
 
 
-  <title>创建逻辑卷 | 道术高深的博客</title>
+  <title>redis笔记一：redis数据存储形式 | 道术高深的博客</title>
   
 
 
@@ -276,7 +268,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/16/创建逻辑卷/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/11/redis笔记一：redis数据存储形式/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="HighTaoism">
@@ -293,7 +285,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">创建逻辑卷</h1>
+          <h1 class="post-title" itemprop="name headline">redis笔记一：redis数据存储形式</h1>
         
 
         <div class="post-meta">
@@ -305,8 +297,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-16T15:14:58+08:00">
-                2018-05-16
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-06-11T16:40:58+08:00">
+                2018-06-11
               </time>
             
 
@@ -328,8 +320,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/linux/" itemprop="url" rel="index">
-                    <span itemprop="name">linux</span>
+                  <a href="/categories/redis/" itemprop="url" rel="index">
+                    <span itemprop="name">redis</span>
                   </a>
                 </span>
 
@@ -352,7 +344,7 @@
 
           
               <div class="post-description">
-                  在linux中创建逻辑卷
+                  对redis的AOF和RDB描述
               </div>
           
 
@@ -369,19 +361,12 @@
       
 
       
-        <h2 id="1-在虚拟机中添加硬盘"><a href="#1-在虚拟机中添加硬盘" class="headerlink" title="1.在虚拟机中添加硬盘"></a>1.在虚拟机中添加硬盘</h2><p>点击【虚拟机】，点击设置，进入设置界面，添加硬盘，如下图所示<br><br><img src="/2018/05/16/创建逻辑卷/1.png"> <br><br><img src="/2018/05/16/创建逻辑卷/2.png"> <br><br><img src="/2018/05/16/创建逻辑卷/3.png"> <br><br><img src="/2018/05/16/创建逻辑卷/4.png"> <br><br><img src="/2018/05/16/创建逻辑卷/5.png"> <br><br><img src="/2018/05/16/创建逻辑卷/6.png"> <br><br><img src="/2018/05/16/创建逻辑卷/7.png"> <br></p>
-<h2 id="2-识别新的硬盘"><a href="#2-识别新的硬盘" class="headerlink" title="2.识别新的硬盘"></a>2.识别新的硬盘</h2><h3 id="2-1-磁盘扫描"><a href="#2-1-磁盘扫描" class="headerlink" title="2.1 磁盘扫描"></a>2.1 磁盘扫描</h3><p>进入操作系统，使用fdisk -l命令查看磁盘情况，因为我的系统之前已经新增过一块磁盘，所以这次新增的磁盘设备名应该是sdc，但是可以看到并没有sdc盘的存在，这是因为我们没有执行磁盘扫描命令。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fdisk -l</span><br></pre></td></tr></table></figure>
-<h3 id="2-2-执行命令使主机识别新增的硬盘"><a href="#2-2-执行命令使主机识别新增的硬盘" class="headerlink" title="2.2 执行命令使主机识别新增的硬盘"></a>2.2 执行命令使主机识别新增的硬盘</h3><p>进入/sys/class/scsi_host/目录，输入ls查看所含文件<br><br>执行echo “- - -“ &gt;  /sys/class/scsi_host/host0/scan  命令使主机识别新增的硬盘。红色部分依次改成第2步时看到的文件名。<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cd /sys/class/scsi_host/</span><br><span class="line">echo "- - -" &gt;  /sys/class/scsi_host/host0/scan</span><br><span class="line">echo "- - -" &gt;  /sys/class/scsi_host/host1/scan</span><br><span class="line">echo "- - -" &gt;  /sys/class/scsi_host/host2/scan</span><br></pre></td></tr></table></figure></p>
-<h3 id="2-3-查看识别的硬盘"><a href="#2-3-查看识别的硬盘" class="headerlink" title="2.3 查看识别的硬盘"></a>2.3 查看识别的硬盘</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fdisk -l</span><br></pre></td></tr></table></figure>
-<h2 id="3-创建逻辑卷"><a href="#3-创建逻辑卷" class="headerlink" title="3.创建逻辑卷"></a>3.创建逻辑卷</h2><h3 id="3-1-创建物理卷"><a href="#3-1-创建物理卷" class="headerlink" title="3.1 创建物理卷"></a>3.1 创建物理卷</h3><p>使用lvcreate命令在sdb分区上创建物理卷<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pvcreate /dev/sdb</span><br></pre></td></tr></table></figure></p>
-<p>可以使用lvdisplay命令查看创建成功的物理卷情况</p>
-<h3 id="3-2-创建卷组"><a href="#3-2-创建卷组" class="headerlink" title="3.2 创建卷组"></a>3.2 创建卷组</h3><p>在这里我们将卷组命名为vg_study。<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vgcreate vg_study /dev/sdb</span><br></pre></td></tr></table></figure></p>
-<p>可以使用lvdisplay命令查看创建成功的物理卷情况</p>
-<h3 id="3-3-创建逻辑卷"><a href="#3-3-创建逻辑卷" class="headerlink" title="3.3 创建逻辑卷"></a>3.3 创建逻辑卷</h3><p>我们将逻辑卷命名为lv_study。<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lvcreate -l +1278 -n lv_study vg_study</span><br></pre></td></tr></table></figure></p>
-<p>注意：有时候由于硬盘太小会报错，可以把1278数据改小一点就可以了<br><br>使用lvdisplay命令可以查看创建的逻辑卷情况。</p>
-<h2 id="4-挂载新硬盘到逻辑卷组中"><a href="#4-挂载新硬盘到逻辑卷组中" class="headerlink" title="4.挂载新硬盘到逻辑卷组中"></a>4.挂载新硬盘到逻辑卷组中</h2><h3 id="4-1-创建逻辑卷文件系统"><a href="#4-1-创建逻辑卷文件系统" class="headerlink" title="4.1 创建逻辑卷文件系统"></a>4.1 创建逻辑卷文件系统</h3><p>创建完逻辑卷后，我们需要将其格式化成某种文件系统类型，这里我们将其格式化成ext4。<br><br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkfs.ext4 /dev/vg_study/lv_study</span><br></pre></td></tr></table></figure></p>
-<h3 id="4-2-挂载逻辑卷"><a href="#4-2-挂载逻辑卷" class="headerlink" title="4.2 挂载逻辑卷"></a>4.2 挂载逻辑卷</h3><p>将创建好文件系统的逻辑卷挂载到目录以后，就可以通过此目录对卷进行读写操作。这里我们将其挂载到lvm_study目录<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mkdir /lvm_study</span><br><span class="line">mount /dev/vg_study/lv_study /lvm_study/</span><br></pre></td></tr></table></figure></p>
+        <h2 id="redis的持久化方式"><a href="#redis的持久化方式" class="headerlink" title="redis的持久化方式"></a>redis的持久化方式</h2><p>redis目前有两种持久化方式：第一种是通过快照（snapshotting）的RDB方式，第二种是AOF的日志方式。</p>
+<h2 id="RDB方式介绍"><a href="#RDB方式介绍" class="headerlink" title="RDB方式介绍"></a>RDB方式介绍</h2><p>redis的存储方式是在redis.conf中配置的，下列配置简单的快照方式，当有10条Keys数据被改变时，300秒刷新到Disk一次。<br><br>当触发这个条件时，系统会产生一个snapshotting的数据，如果系统出现大量的IO操作时，系统可能会产生大量的垃圾文件，导致存储空间爆满。出现这种情况时，需要修改配置信息，将产生快照的频率降低；或者是对快照执行定时删除操作，只保留三天的数据快照之类的，这也是可配置的。<br><br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">save 10 300</span><br></pre></td></tr></table></figure></p>
+<h4 id="注意：快照产生的文件是全量文件，而不是增量文件，所有快照大量生成的话，对系统io操作增加，性能会有很大的影响"><a href="#注意：快照产生的文件是全量文件，而不是增量文件，所有快照大量生成的话，对系统io操作增加，性能会有很大的影响" class="headerlink" title="注意：快照产生的文件是全量文件，而不是增量文件，所有快照大量生成的话，对系统io操作增加，性能会有很大的影响"></a>注意：快照产生的文件是全量文件，而不是增量文件，所有快照大量生成的话，对系统io操作增加，性能会有很大的影响</h4><h2 id="AOF方式介绍"><a href="#AOF方式介绍" class="headerlink" title="AOF方式介绍"></a>AOF方式介绍</h2><p>redis的AOF存储方式是通过对每一步的redis操作进行日志记录来保证持久化操作，这个行为方式可以保证数据不会丢失，因为他会记录每一个用户操作，但是当incr 100次之类的操作时候会产生大量的垃圾数据，而RDB方式只会记录最后一条记录。下列是配置AOF的方式：<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">appendonly yes #打开aof方式</span><br><span class="line"># appendfsync always //每次收到写命令就立即强制写入磁盘，最慢的，但是保证完全的持久化，不推荐使用</span><br><span class="line">appendfsync everysec //每秒钟强制写入磁盘一次，在性能和持久化方面做了很好的折中，推荐</span><br><span class="line"># appendfsync no //完全依赖os，性能最好,持久化没保证</span><br></pre></td></tr></table></figure></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p><li>相对于恢复数据速率而言，通过RDB方式的快照恢复数据是快于AOF方式的</li></p>
+<p><li>相对于数据完整性而言，AOF是记录了所有的操作，而RDB方式会丢失最后几分钟的数据</li></p>
+<p><li>想要达到PostgreSQL的数据安全性，需要2种方式都需要使用。</li></p>
 
       
     </div>
@@ -409,7 +394,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/lvm/" rel="tag"><i class="fa fa-tag"></i> lvm</a>
+            <a href="/tags/学习笔记/" rel="tag"><i class="fa fa-tag"></i> 学习笔记</a>
           
         </div>
       
@@ -422,8 +407,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/05/11/svn版本问题/" rel="next" title="svn版本问题">
-                <i class="fa fa-chevron-left"></i> svn版本问题
+              <a href="/2018/06/06/ORA-01722-invalid-number/" rel="next" title="ORA-01722:invalid number">
+                <i class="fa fa-chevron-left"></i> ORA-01722:invalid number
               </a>
             
           </div>
@@ -431,10 +416,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/05/31/存储过程之创建时间表和执行/" rel="prev" title="存储过程之创建时间表和执行">
-                存储过程之创建时间表和执行 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -600,7 +581,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-在虚拟机中添加硬盘"><span class="nav-text">1.在虚拟机中添加硬盘</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-识别新的硬盘"><span class="nav-text">2.识别新的硬盘</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-磁盘扫描"><span class="nav-text">2.1 磁盘扫描</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-执行命令使主机识别新增的硬盘"><span class="nav-text">2.2 执行命令使主机识别新增的硬盘</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-查看识别的硬盘"><span class="nav-text">2.3 查看识别的硬盘</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-创建逻辑卷"><span class="nav-text">3.创建逻辑卷</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-创建物理卷"><span class="nav-text">3.1 创建物理卷</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-创建卷组"><span class="nav-text">3.2 创建卷组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-创建逻辑卷"><span class="nav-text">3.3 创建逻辑卷</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-挂载新硬盘到逻辑卷组中"><span class="nav-text">4.挂载新硬盘到逻辑卷组中</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-创建逻辑卷文件系统"><span class="nav-text">4.1 创建逻辑卷文件系统</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-挂载逻辑卷"><span class="nav-text">4.2 挂载逻辑卷</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#redis的持久化方式"><span class="nav-text">redis的持久化方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RDB方式介绍"><span class="nav-text">RDB方式介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#注意：快照产生的文件是全量文件，而不是增量文件，所有快照大量生成的话，对系统io操作增加，性能会有很大的影响"><span class="nav-text">注意：快照产生的文件是全量文件，而不是增量文件，所有快照大量生成的话，对系统io操作增加，性能会有很大的影响</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AOF方式介绍"><span class="nav-text">AOF方式介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-text">总结</span></a></li></ol></div>
             
 
           </div>
