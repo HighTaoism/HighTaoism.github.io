@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="google-site-verification" content="d6rD03r9flUlKNgIkWNc08pthiveOBZzb4sgjzz3vBE" />
+
+
+
+
+
+
+
+
+  <meta name="baidu-site-verification" content="ayZf2YYk6T" />
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="软件安装," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="概述安装hadoop和hbase高可用需要一些前置安装软件，需要依赖免登陆和Zookeeper。1234安装文件用户名 ：kai安装目录(由于本地安装，分配空间基本都在/home目录下面，看各自需求安装,安装在/opt下最好)：/home/kai/hadoop/home/kai/hbase 修改主机名称12345678910vi /etc/sysconfig/networkHOSTNAME=nod">
+<meta name="keywords" content="软件安装">
+<meta property="og:type" content="article">
+<meta property="og:title" content="大数据一：hadoop和hbase安装">
+<meta property="og:url" content="http://yoursite.com/2018/10/18/大数据一：hadoop和hbase安装/index.html">
+<meta property="og:site_name" content="道术高深的博客">
+<meta property="og:description" content="概述安装hadoop和hbase高可用需要一些前置安装软件，需要依赖免登陆和Zookeeper。1234安装文件用户名 ：kai安装目录(由于本地安装，分配空间基本都在/home目录下面，看各自需求安装,安装在/opt下最好)：/home/kai/hadoop/home/kai/hbase 修改主机名称12345678910vi /etc/sysconfig/networkHOSTNAME=nod">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-10-19T03:54:14.083Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="大数据一：hadoop和hbase安装">
+<meta name="twitter:description" content="概述安装hadoop和hbase高可用需要一些前置安装软件，需要依赖免登陆和Zookeeper。1234安装文件用户名 ：kai安装目录(由于本地安装，分配空间基本都在/home目录下面，看各自需求安装,安装在/opt下最好)：/home/kai/hadoop/home/kai/hbase 修改主机名称12345678910vi /etc/sysconfig/networkHOSTNAME=nod">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/10/18/大数据一：hadoop和hbase安装/"/>
+
+
+
+
+
+  <title>大数据一：hadoop和hbase安装 | 道术高深的博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+	<a href="https://hightaoism.github.io/" class="github-corner" aria-label="View source on Github"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">道术高深的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">HighTaoism's blog</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-futbol-o"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/18/大数据一：hadoop和hbase安装/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="HighTaoism">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/user.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="道术高深的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">大数据一：hadoop和hbase安装</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-10-18T14:39:49+08:00">
+                2018-10-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/大数据/" itemprop="url" rel="index">
+                    <span itemprop="name">大数据</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>安装hadoop和hbase高可用需要一些前置安装软件，需要依赖免登陆和Zookeeper。<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">安装文件用户名 ：kai</span><br><span class="line">安装目录(由于本地安装，分配空间基本都在/home目录下面，看各自需求安装,安装在/opt下最好)：</span><br><span class="line">/home/kai/hadoop</span><br><span class="line">/home/kai/hbase</span><br></pre></td></tr></table></figure></p>
+<h2 id="修改主机名称"><a href="#修改主机名称" class="headerlink" title="修改主机名称"></a>修改主机名称</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/sysconfig/network</span><br><span class="line">HOSTNAME=node01(需要修改的主机名称)</span><br><span class="line">--我的主机名称分别为node01 node02 node03</span><br><span class="line"></span><br><span class="line">--添加域名和主机名的关系</span><br><span class="line">vi /etc/hosts</span><br><span class="line">--文件添加</span><br><span class="line">192.168.1.3 node01</span><br><span class="line">192.168.1.4 node02</span><br><span class="line">192.168.1.5 node03</span><br></pre></td></tr></table></figure>
+<h2 id="免登陆"><a href="#免登陆" class="headerlink" title="免登陆"></a>免登陆</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">--node01下kai用户（非root）执行</span><br><span class="line">ssh-keygen -t rsa</span><br><span class="line">--出现任何东西，都打enter</span><br><span class="line">ssh-copy-id -i ~/.ssh/id_rsa.pub node01  --yes 输入登录密码</span><br><span class="line">ssh-copy-id -i ~/.ssh/id_rsa.pub node02  --yes 输入登录密码</span><br><span class="line">ssh-copy-id -i ~/.ssh/id_rsa.pub node03  --yes 输入登录密码</span><br><span class="line">在node02,node03也执行一遍命令</span><br></pre></td></tr></table></figure>
+<h2 id="安装hadoop"><a href="#安装hadoop" class="headerlink" title="安装hadoop"></a>安装hadoop</h2><p>1、到/home/kai/hadoop目录下解压 <br><br>tar -zxvf hadoop-2.6.0.tar.gz <br><br>2、进入/home/kai/hadoop/hadoop-2.6.0/etc/hadoop目录 <br><br>修改配置文件：core-site.xml,hdfs-site.xml,yarn-site.xml,mapred-site.xml <br></p>
+<h3 id="1、-core-site-xml修改地方："><a href="#1、-core-site-xml修改地方：" class="headerlink" title="1、 core-site.xml修改地方："></a>1、 core-site.xml修改地方：<br></h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&lt;configuration&gt;</span><br><span class="line">    &lt;!-- hdfs连接地址，集群模式（高可用） --&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;fs.defaultFS&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;hdfs://cluster&lt;/value&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">    &lt;!-- namenode,datanode数据存放目录 --&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;hadoop.tmp.dir&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;/home/kai/hadoop/hadoop-2.6.0/tmp&lt;/value&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">    &lt;!-- zookeeper地址 --&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;ha.zookeeper.quorum&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;node01:2181,node02:2181,node03:2181&lt;/value&gt;</span><br><span class="line">    &lt;/property&gt; </span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="2、hdfs-site-xml修改地方："><a href="#2、hdfs-site-xml修改地方：" class="headerlink" title="2、hdfs-site.xml修改地方："></a>2、hdfs-site.xml修改地方：<br></h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line">&lt;configuration&gt;</span><br><span class="line"></span><br><span class="line">    &lt;property&gt;  </span><br><span class="line">        &lt;name&gt;dfs.nameservices&lt;/name&gt;  </span><br><span class="line">        &lt;value&gt;cluster&lt;/value&gt;  </span><br><span class="line">    &lt;/property&gt;  </span><br><span class="line"></span><br><span class="line">    &lt;property&gt;  </span><br><span class="line">        &lt;name&gt;dfs.ha.namenodes.cluster&lt;/name&gt;  </span><br><span class="line">        &lt;value&gt;nn01,nn02&lt;/value&gt;  </span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">    &lt;!-- nn01的RPC通信地址 --&gt;</span><br><span class="line">    &lt;property&gt;  </span><br><span class="line">        &lt;name&gt;dfs.namenode.rpc-address.cluster.nn01&lt;/name&gt;  </span><br><span class="line">        &lt;value&gt;node01:9000&lt;/value&gt;  </span><br><span class="line">    &lt;/property&gt;  </span><br><span class="line">    &lt;!-- nn01的http通信地址 --&gt;</span><br><span class="line">    &lt;property&gt;  </span><br><span class="line">        &lt;name&gt;dfs.namenode.http-address.cluster.nn01&lt;/name&gt;  </span><br><span class="line">        &lt;value&gt;node01:50070&lt;/value&gt;  </span><br><span class="line">    &lt;/property&gt;  </span><br><span class="line">     &lt;!-- nn02的RPC通信地址 --&gt;</span><br><span class="line">    &lt;property&gt;  </span><br><span class="line">        &lt;name&gt;dfs.namenode.rpc-address.cluster.nn02&lt;/name&gt;  </span><br><span class="line">        &lt;value&gt;node02:9000&lt;/value&gt;  </span><br><span class="line">    &lt;/property&gt;  </span><br><span class="line">    &lt;!-- nn02的http通信地址 --&gt;</span><br><span class="line">    &lt;property&gt;  </span><br><span class="line">        &lt;name&gt;dfs.namenode.http-address.cluster.nn02&lt;/name&gt;  </span><br><span class="line">        &lt;value&gt;node02:50070&lt;/value&gt;  </span><br><span class="line">    &lt;/property&gt;  </span><br><span class="line">    &lt;!-- 指定NameNode的元数据在JournalNode上的存放位置 --&gt;</span><br><span class="line">    &lt;property&gt;  </span><br><span class="line">        &lt;name&gt;dfs.namenode.shared.edits.dir&lt;/name&gt;  </span><br><span class="line">        &lt;value&gt;qjournal://node01:8485;node02:8485;node03:8485/cluster&lt;/value&gt;  </span><br><span class="line">    &lt;/property&gt;  </span><br><span class="line">    &lt;!-- 指定JournalNode在本地磁盘存放数据的位置 --&gt;</span><br><span class="line">    &lt;property&gt;  </span><br><span class="line">        &lt;name&gt;dfs.journalnode.edits.dir&lt;/name&gt;  </span><br><span class="line">        &lt;value&gt;/home/kai/hadoop/hadoop-2.6.0/journaldata&lt;/value&gt;  </span><br><span class="line">    &lt;/property&gt;  </span><br><span class="line">    &lt;!-- 开启NameNode故障时自动切换 --&gt;</span><br><span class="line">    &lt;property&gt;  </span><br><span class="line">        &lt;name&gt;dfs.ha.automatic-failover.enabled&lt;/name&gt;  </span><br><span class="line">        &lt;value&gt;true&lt;/value&gt;  </span><br><span class="line">    &lt;/property&gt;  </span><br><span class="line">    &lt;!-- 配置失败自动切换实现方式 --&gt;</span><br><span class="line">    &lt;property&gt;  </span><br><span class="line">        &lt;name&gt;dfs.client.failover.proxy.provider.cluster&lt;/name&gt;  </span><br><span class="line">        &lt;value&gt;org.apache.hadoop.hdfs.server.namenode.ha.ConfiguredFailoverProxyProvider&lt;/value&gt;  </span><br><span class="line">    &lt;/property&gt;  </span><br><span class="line">     &lt;!-- 配置隔离机制,需要ssh免登陆,默认端口22 --&gt;</span><br><span class="line">    &lt;property&gt;  </span><br><span class="line">        &lt;name&gt;dfs.ha.fencing.methods&lt;/name&gt;  </span><br><span class="line">        &lt;value&gt;sshfence&lt;/value&gt;  </span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">    &lt;!--&lt;property&gt;</span><br><span class="line">             &lt;name&gt;dfs.ha.fencing.methods&lt;/name&gt;</span><br><span class="line">             &lt;value&gt;sshfence(hadoop:22022)&lt;/value&gt;</span><br><span class="line">    &lt;/property&gt;--&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!-- 如果使用ssh进行故障切换，ssh通信所需要的密钥存储位置。注意：密钥默认保存在当前用户家目录的.ssh目录下，请根据实际情况修改 --&gt;</span><br><span class="line">    &lt;property&gt;  </span><br><span class="line">        &lt;name&gt;dfs.ha.fencing.ssh.private-key-files&lt;/name&gt;  </span><br><span class="line">        &lt;value&gt;/home/kai/.ssh/id_rsa&lt;/value&gt;  </span><br><span class="line">    &lt;/property&gt;  </span><br><span class="line"></span><br><span class="line">    &lt;!-- connect-timeout超时时间 --&gt;</span><br><span class="line">    &lt;property&gt;  </span><br><span class="line">        &lt;name&gt;dfs.ha.fencing.ssh.connect-timeout&lt;/name&gt;  </span><br><span class="line">        &lt;value&gt;30000&lt;/value&gt;  </span><br><span class="line">    &lt;/property&gt;  </span><br><span class="line"></span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="3、yarn-site-xml修改地方："><a href="#3、yarn-site-xml修改地方：" class="headerlink" title="3、yarn-site.xml修改地方："></a>3、yarn-site.xml修改地方：<br></h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">&lt;configuration&gt;</span><br><span class="line">    &lt;!-- 启用HA高可用性 --&gt;</span><br><span class="line">    &lt;property&gt;  </span><br><span class="line">       &lt;name&gt;yarn.resourcemanager.ha.enabled&lt;/name&gt;  </span><br><span class="line">       &lt;value&gt;true&lt;/value&gt;  </span><br><span class="line">    &lt;/property&gt;  </span><br><span class="line"></span><br><span class="line">    &lt;!-- 指定resourcemanager的名字 --&gt;</span><br><span class="line">    &lt;property&gt;  </span><br><span class="line">       &lt;name&gt;yarn.resourcemanager.cluster-id&lt;/name&gt;  </span><br><span class="line">       &lt;value&gt;yrc&lt;/value&gt;  </span><br><span class="line">    &lt;/property&gt;  </span><br><span class="line"></span><br><span class="line">    &lt;!-- 配置2个resourcemanager --&gt;</span><br><span class="line">    &lt;property&gt;  </span><br><span class="line">       &lt;name&gt;yarn.resourcemanager.ha.rm-ids&lt;/name&gt;  </span><br><span class="line">       &lt;value&gt;rm1,rm2&lt;/value&gt;  </span><br><span class="line">    &lt;/property&gt;  </span><br><span class="line"></span><br><span class="line">    &lt;property&gt;  </span><br><span class="line">       &lt;name&gt;yarn.resourcemanager.hostname.rm1&lt;/name&gt;  </span><br><span class="line">       &lt;value&gt;node01&lt;/value&gt;  </span><br><span class="line">    &lt;/property&gt;  </span><br><span class="line">    &lt;property&gt;  </span><br><span class="line">       &lt;name&gt;yarn.resourcemanager.hostname.rm2&lt;/name&gt;  </span><br><span class="line">       &lt;value&gt;node02&lt;/value&gt;  </span><br><span class="line">    &lt;/property&gt;  </span><br><span class="line"></span><br><span class="line">    &lt;property&gt;  </span><br><span class="line">       &lt;name&gt;yarn.resourcemanager.zk-address&lt;/name&gt;  </span><br><span class="line">       &lt;value&gt;node01:2181,node02:2181,node03:2181&lt;/value&gt;  </span><br><span class="line">    &lt;/property&gt; </span><br><span class="line"></span><br><span class="line">     &lt;!-- 指定nodemanager启动时加载server的方式为shuffle server --&gt;</span><br><span class="line">    &lt;property&gt;  </span><br><span class="line">       &lt;name&gt;yarn.nodemanager.aux-services&lt;/name&gt;  </span><br><span class="line">       &lt;value&gt;mapreduce_shuffle&lt;/value&gt;  </span><br><span class="line">    &lt;/property&gt; </span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="4、mapred-site-xml修改地方-该文件不存在，需要手动创建"><a href="#4、mapred-site-xml修改地方-该文件不存在，需要手动创建" class="headerlink" title="4、mapred-site.xml修改地方(该文件不存在，需要手动创建)"></a>4、mapred-site.xml修改地方(该文件不存在，需要手动创建)</h3><p>cp mapred-site.xml.template mapred-site.xml <br><br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;configuration&gt;</span><br><span class="line">&lt;!-- 采用yarn作为mapreduce的资源调度框架 --&gt;</span><br><span class="line">    &lt;property&gt;  </span><br><span class="line">        &lt;name&gt;mapreduce.framework.name&lt;/name&gt;  </span><br><span class="line">        &lt;value&gt;yarn&lt;/value&gt;  </span><br><span class="line">    &lt;/property&gt;  </span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure></p>
+<h3 id="5、-修改slave为"><a href="#5、-修改slave为" class="headerlink" title="5、 修改slave为"></a>5、 修改slave为</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">node01</span><br><span class="line">node02</span><br><span class="line">node03</span><br></pre></td></tr></table></figure>
+<h3 id="6、修改hadoop-env-sh文件，指定jdk的地址"><a href="#6、修改hadoop-env-sh文件，指定jdk的地址" class="headerlink" title="6、修改hadoop-env.sh文件，指定jdk的地址"></a>6、修改hadoop-env.sh文件，指定jdk的地址</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> The java implementation to use.</span><br><span class="line">export JAVA_HOME=/opt/java/jdk1.7.0_80</span><br></pre></td></tr></table></figure>
+<h3 id="7、配置用户环境变量-添加"><a href="#7、配置用户环境变量-添加" class="headerlink" title="7、配置用户环境变量,添加"></a>7、配置用户环境变量,添加</h3><p>vim ~/.bash_profile<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> hadoop environment variables </span><br><span class="line">export HADOOP_HOME=/home/kai/hadoop/hadoop-2.6.0/hadoop-2.6.0</span><br><span class="line">export PATH=$HADOOP_HOME/bin:$PATH</span><br></pre></td></tr></table></figure></p>
+<h3 id="8、传输文件到其他服务中"><a href="#8、传输文件到其他服务中" class="headerlink" title="8、传输文件到其他服务中"></a>8、传输文件到其他服务中</h3><p>scp -r /home/kai/hadoop/hadoop-2.6.0 kai@node02:/home/kai/hadoop <br><br>scp -r /home/kai/hadoop/hadoop-2.6.0 kai@node02:/home/kai/hadoop <br></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">initLimit=10  /* Follower连接loader初始化时间，超时则退出同步数据过程,重新选举*/</span><br><span class="line">syncLimit=5   /* Follower连接loader心跳时间，超时则认为Follower不在线*/</span><br><span class="line">tickTime=2000 /*执行时间间隔（不需要修改）*/</span><br><span class="line">dataDir=/home/kai/zk/data  /*数据存储目录（根据当前路径进行修改）*/</span><br><span class="line">clientPort=2181  /*端口，根据需要进行设置，默认为2181端口，在其它应用中都需要使用此端口*/</span><br><span class="line">server.1=192.168.1.3:2888:3888 /*编号1的zookeeper*/</span><br><span class="line">server.2=192.168.1.4:2888:3888 /*编号2的zookeeper*/</span><br><span class="line">server.3=192.168.1.5:2888:3888 /*编号3的zookeeper*/</span><br></pre></td></tr></table></figure>
+<h2 id="启动hadoop-home-kai-hadoop-hadoop-2-6-0-bin"><a href="#启动hadoop-home-kai-hadoop-hadoop-2-6-0-bin" class="headerlink" title="启动hadoop/home/kai/hadoop/hadoop-2.6.0/bin"></a>启动hadoop/home/kai/hadoop/hadoop-2.6.0/bin</h2><h3 id="1-启动journalnode"><a href="#1-启动journalnode" class="headerlink" title="(1) 启动journalnode"></a>(1) 启动journalnode</h3><p>三台机器都要这一步操作（仅第一次启动hadoop时，需要这一步操作，之后不再需要手动启动journalnode）<br><br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd /home/kai/hadoop/hadoop-2.6.0/sbin</span><br><span class="line">sh hadoop-daemon.sh start journalnode</span><br></pre></td></tr></table></figure></p>
+<h3 id="2-在node1上执行格式化操作，格式化namenode和zkfc"><a href="#2-在node1上执行格式化操作，格式化namenode和zkfc" class="headerlink" title="(2) 在node1上执行格式化操作，格式化namenode和zkfc"></a>(2) 在node1上执行格式化操作，格式化namenode和zkfc</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd /home/kai/hadoop/hadoop-2.6.0/bin</span><br><span class="line">./hdfs zkfc -formatZK</span><br></pre></td></tr></table></figure>
+<h3 id="3-namenode主从信息同步："><a href="#3-namenode主从信息同步：" class="headerlink" title="(3) namenode主从信息同步："></a>(3) namenode主从信息同步：</h3><p>复制node01上的/home/kai/hadoop/hadoop-2.6.0/tmp/目录到node02的/home/kai/hadoop/hadoop-2.6.0/目录下<br><br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scp -r /home/kai/hadoop/hadoop-2.6.0/tmp/ kai@node02:/home/kai/hadoop/hadoop-2.6.0</span><br></pre></td></tr></table></figure></p>
+<h3 id="4-上述步骤完成后，接下来我们就可以启动hadoop了"><a href="#4-上述步骤完成后，接下来我们就可以启动hadoop了" class="headerlink" title="(4)上述步骤完成后，接下来我们就可以启动hadoop了"></a>(4)上述步骤完成后，接下来我们就可以启动hadoop了</h3><p>在node01机器上执行下面的命令<br><br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cd /home/kai/hadoop/hadoop-2.6.0/sbin</span><br><span class="line"><span class="meta">#</span> 启动hdfs</span><br><span class="line">sh start-dfs.sh</span><br><span class="line"><span class="meta">#</span> 启动yarn</span><br><span class="line">sh start-yarn.sh</span><br></pre></td></tr></table></figure></p>
+<h3 id="5-在node02机器上启动ResourceManager（备用主节点的ResourceManager需要手动启动）"><a href="#5-在node02机器上启动ResourceManager（备用主节点的ResourceManager需要手动启动）" class="headerlink" title="(5)在node02机器上启动ResourceManager（备用主节点的ResourceManager需要手动启动）"></a>(5)在node02机器上启动ResourceManager（备用主节点的ResourceManager需要手动启动）</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">cd /home/kai/hadoop/hadoop-2.6.0/sbin</span><br><span class="line">sh yarn-daemon.sh start resourcemanager</span><br><span class="line">jps #查询启动的进程-下列是我的node01的进程</span><br><span class="line">3706 DataNode</span><br><span class="line">4099 NodeManager</span><br><span class="line">4007 ResourceManager</span><br><span class="line">2657 JournalNode</span><br><span class="line">3119 NameNode</span><br><span class="line">6546 Jps</span><br><span class="line">3483 DFSZKFailoverController</span><br><span class="line">2927 QuorumPeerMain</span><br></pre></td></tr></table></figure>
+<h3 id="6-通过界面查询namenode进程状态"><a href="#6-通过界面查询namenode进程状态" class="headerlink" title="(6) 通过界面查询namenode进程状态"></a>(6) 通过界面查询namenode进程状态</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.1.3:50070/ #active</span><br><span class="line">http://192.168.1.4:50070/ #standby</span><br></pre></td></tr></table></figure>
+<h3 id="7-查看每个datanode的信息，"><a href="#7-查看每个datanode的信息，" class="headerlink" title="(7) 查看每个datanode的信息，"></a>(7) 查看每个datanode的信息，</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.1.3:50075、</span><br><span class="line">http://192.168.1.4:50075、</span><br><span class="line">http://192.168.1.5:50075</span><br></pre></td></tr></table></figure>
+<h3 id="8-查看yarn控制台"><a href="#8-查看yarn控制台" class="headerlink" title="(8)查看yarn控制台"></a>(8)查看yarn控制台</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.1.3:8088/cluster</span><br></pre></td></tr></table></figure>
+<h3 id="9-测试高可用"><a href="#9-测试高可用" class="headerlink" title="(9)测试高可用"></a>(9)测试高可用</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">jsp #查看nade01进程号。杀死namenode</span><br><span class="line">kill -9 3119</span><br><span class="line"><span class="meta">#</span>查看namenode状态，namenode02变成active了</span><br><span class="line">http://192.168.1.4:50070/ </span><br><span class="line"><span class="meta">#</span>启动name01 ,查看namenode01状态，为standby了</span><br><span class="line">sh start-dfs.sh</span><br><span class="line">http://192.168.1.3:50070/</span><br></pre></td></tr></table></figure>
+<h2 id="安装hbase"><a href="#安装hbase" class="headerlink" title="安装hbase"></a>安装hbase</h2><h3 id="解压文件，修改配置文件"><a href="#解压文件，修改配置文件" class="headerlink" title="解压文件，修改配置文件"></a>解压文件，修改配置文件</h3><p>(1)上传文件解压，我的目录在/home/kai/hbase <br><br>(2)tar -zxvf hbase-1.1.3-bin.tar.gz <br><br>(3)修改配置文件地址在/home/kai/hbase/hbase-1.1.3/conf :hbase-env.sh,hbase-site.xml<br><br><br><br>hbase-env.sh<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> 指定jdk目录</span><br><span class="line"><span class="meta">#</span> The java implementation to use.  Java 1.7+ required.</span><br><span class="line">export JAVA_HOME=/opt/java/jdk1.7.0_80/</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 指定pid文件目录</span><br><span class="line"><span class="meta">#</span> The directory where pid files are stored. /tmp by default. </span><br><span class="line">export HBASE_PID_DIR=/home/kai/hbase/hbase-1.1.3/pids</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 禁用HBase自带的Zookeeper，因为我们是使用独立的Zookeeper</span><br><span class="line"><span class="meta">#</span> Tell HBase whether it should manage it's own instance of Zookeeper or not.                                                  </span><br><span class="line">export HBASE_MANAGES_ZK=false</span><br></pre></td></tr></table></figure></p>
+<p><br><br>hbase-site.xml<br><br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">&lt;configuration&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;hbase.rootdir&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;hdfs://cluster/hbase&lt;/value&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">  &lt;property&gt;</span><br><span class="line">        &lt;name&gt;hbase.cluster.distributed&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;true&lt;/value&gt;</span><br><span class="line">  &lt;/property&gt;</span><br><span class="line">  &lt;property&gt;</span><br><span class="line">        &lt;name&gt;hbase.zookeeper.quorum&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;node01:2181,node02:2181,node03:2181&lt;/value&gt;</span><br><span class="line">  &lt;/property&gt;</span><br><span class="line">  &lt;property&gt;</span><br><span class="line">        &lt;name&gt;hbase.tmp.dir&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;/home/kai/hbase/hbase-1.1.3/tmp/hbase&lt;/value&gt;</span><br><span class="line">  &lt;/property&gt;</span><br><span class="line">  &lt;property&gt;</span><br><span class="line">        &lt;name&gt;hbase.zookeeper.property.dataDir&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;/home/kai/hbase/hbase-1.1.3/tmp/data&lt;/value&gt;</span><br><span class="line">  &lt;/property&gt;</span><br><span class="line">  &lt;property&gt;</span><br><span class="line">        &lt;name&gt;hbase.regionserver.restart.on.zk.expire&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;true&lt;/value&gt;</span><br><span class="line">  &lt;/property&gt;</span><br><span class="line">  &lt;property&gt;</span><br><span class="line">        &lt;name&gt;hbase.master.info.port&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;60010&lt;/value&gt;</span><br><span class="line">  &lt;/property&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure></p>
+<p>(4) 拷贝core-site.xml ,hdfs-site.xml文件到/home/kai/hbase/hbase-1.1.3/conf下，<br>如果缺少这两个文件，启动hbase时会出现未知主机的异常，导致进程启动失败<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cp /home/kai/hadoop/hadoop-2.6.0/etc/hadoop/core-site.xml /home/kai/hbase/hbase-1.1.3/conf</span><br><span class="line">cp /home/kai/hadoop/hadoop-2.6.0/etc/hadoop/hdfs-site.xml /home/kai/hbase/hbase-1.1.3/conf</span><br></pre></td></tr></table></figure></p>
+<p>(5) 修改regionservers文件<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">node01</span><br><span class="line">node02</span><br><span class="line">node03</span><br></pre></td></tr></table></figure></p>
+<p>(6) 添加文件<br>vim /home/kai/hbase/hbase-1.1.3/conf/backup-master<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>文件填写备用主机</span><br><span class="line">node02</span><br></pre></td></tr></table></figure></p>
+<p>(7) 添加文件<br>vim ~/.bash_profile <br><br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> hbase environment variables</span><br><span class="line">export HBASE_HOME=/home/kai/hbase/hbase-1.1.3</span><br><span class="line">export PATH=$HBASE_HOME/bin:$PATH</span><br></pre></td></tr></table></figure></p>
+<p>(8) 拷贝复制到其它机器<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">scp -r hbase/ kai@node02:/home/kai/</span><br><span class="line">scp -r hbase/ kai@node03:/home/kai/</span><br></pre></td></tr></table></figure></p>
+<p>(9) 启动hbase进程<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cd /home/kai/hbase/hbase-1.1.3/bin</span><br><span class="line">sh start-hbase.sh</span><br><span class="line"><span class="meta">#</span># 主备都需要启动</span><br><span class="line"><span class="meta">#</span>#（启动主节点，备节点可能没有带起来，看个人情况把）</span><br></pre></td></tr></table></figure></p>
+<p>(10) 登陆web界面查看hbase信息<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.1.3:60010/ </span><br><span class="line"><span class="meta">#</span>Master node01</span><br></pre></td></tr></table></figure></p>
+<p><a href="http://192.168.1.4:60010/" target="_blank" rel="noopener">http://192.168.1.4:60010/</a><br>(11) 测试高可用<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">jps#</span>查询Hmaster进程号</span><br><span class="line">kill -9 123</span><br><span class="line">查看http://192.168.1.4:60010/</span><br><span class="line"><span class="meta">#</span> Master node02</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    
+    
+    
+
+	<div>
+	  
+		<div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------the article end  <i class="fa fa-paw"></i>  thank you for you reading-------------</div>
+    
+</div>
+	  
+	</div>
+	
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/软件安装/" rel="tag"><i class="fa fa-tag"></i> 软件安装</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/10/11/JS正则表达式例子/" rel="next" title="JS正则表达式例子">
+                <i class="fa fa-chevron-left"></i> JS正则表达式例子
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/10/25/rocketmq笔记一：双master集群安装/" rel="prev" title="rocketmq笔记一：双master集群安装">
+                rocketmq笔记一：双master集群安装 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/user.jpg"
+                alt="HighTaoism" />
+            
+              <p class="site-author-name" itemprop="name">HighTaoism</p>
+              <p class="site-description motion-element" itemprop="description">好好学习，天天向上</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://hightaoism.github.io/" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:im.1026270425@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i></a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://wxyuan.github.io" title="wuxy的博客" target="_blank" rel="external nofollow">wuxy的博客</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#概述"><span class="nav-text">概述</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#修改主机名称"><span class="nav-text">修改主机名称</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#免登陆"><span class="nav-text">免登陆</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装hadoop"><span class="nav-text">安装hadoop</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、-core-site-xml修改地方："><span class="nav-text">1、 core-site.xml修改地方：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、hdfs-site-xml修改地方："><span class="nav-text">2、hdfs-site.xml修改地方：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3、yarn-site-xml修改地方："><span class="nav-text">3、yarn-site.xml修改地方：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4、mapred-site-xml修改地方-该文件不存在，需要手动创建"><span class="nav-text">4、mapred-site.xml修改地方(该文件不存在，需要手动创建)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5、-修改slave为"><span class="nav-text">5、 修改slave为</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6、修改hadoop-env-sh文件，指定jdk的地址"><span class="nav-text">6、修改hadoop-env.sh文件，指定jdk的地址</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7、配置用户环境变量-添加"><span class="nav-text">7、配置用户环境变量,添加</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8、传输文件到其他服务中"><span class="nav-text">8、传输文件到其他服务中</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#启动hadoop-home-kai-hadoop-hadoop-2-6-0-bin"><span class="nav-text">启动hadoop/home/kai/hadoop/hadoop-2.6.0/bin</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-启动journalnode"><span class="nav-text">(1) 启动journalnode</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-在node1上执行格式化操作，格式化namenode和zkfc"><span class="nav-text">(2) 在node1上执行格式化操作，格式化namenode和zkfc</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-namenode主从信息同步："><span class="nav-text">(3) namenode主从信息同步：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-上述步骤完成后，接下来我们就可以启动hadoop了"><span class="nav-text">(4)上述步骤完成后，接下来我们就可以启动hadoop了</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-在node02机器上启动ResourceManager（备用主节点的ResourceManager需要手动启动）"><span class="nav-text">(5)在node02机器上启动ResourceManager（备用主节点的ResourceManager需要手动启动）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-通过界面查询namenode进程状态"><span class="nav-text">(6) 通过界面查询namenode进程状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-查看每个datanode的信息，"><span class="nav-text">(7) 查看每个datanode的信息，</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-查看yarn控制台"><span class="nav-text">(8)查看yarn控制台</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-测试高可用"><span class="nav-text">(9)测试高可用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装hbase"><span class="nav-text">安装hbase</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#解压文件，修改配置文件"><span class="nav-text">解压文件，修改配置文件</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">HighTaoism</span>
+
+  
+</div>
+
+
+<!--  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io" rel="external nofollow">Hexo</a></div> 
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next" rel="external nofollow">NexT.Pisces</a> v5.1.4</div> -->
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  undefined
+<script src="/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({"model":"nietzsche","bottom":-30,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/"});</script></body>
+</html>

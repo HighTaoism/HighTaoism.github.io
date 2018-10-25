@@ -91,7 +91,7 @@
 <meta property="og:site_name" content="道术高深的博客">
 <meta property="og:description" content="svn的配置信息和启动命令">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-08-01T02:41:08.007Z">
+<meta property="og:updated_time" content="2018-09-30T03:38:22.980Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="svn配置和启动">
 <meta name="twitter:description" content="svn的配置信息和启动命令">
@@ -363,6 +363,7 @@
       
         <h2 id="SVN配置信息"><a href="#SVN配置信息" class="headerlink" title="SVN配置信息"></a>SVN配置信息</h2><p>安装完svn之后，需要配置svn仓库、帐号、密码等，我的svn建立在/svn目录下面的。下面信息以此作为标准。<br><br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>新建仓库目录</span><br><span class="line">cd /svn</span><br><span class="line">mkdir shiot</span><br><span class="line">svnadmin create /svn/shiot</span><br><span class="line">vim /svn/shiot/conf/server.conf</span><br><span class="line"><span class="meta">#</span>将这个修改为自己的svn名称：realm = shiot</span><br><span class="line"><span class="meta">#</span>保存，退出</span><br><span class="line">cd /svn/shiot/conf</span><br><span class="line">vim passwd</span><br><span class="line"><span class="meta">#</span>添加用户名=密码</span><br><span class="line">[users]</span><br><span class="line">plk = passwd</span><br><span class="line">plk2 = passwd</span><br><span class="line">vim authz</span><br><span class="line"><span class="meta">#</span>添加群组和权限</span><br><span class="line">[groups]</span><br><span class="line"><span class="meta">#</span>群组名称=用户名1，用户名2</span><br><span class="line">group1 = plk</span><br><span class="line">group2 = plk,plk2</span><br><span class="line"><span class="meta">#</span>添加权限</span><br><span class="line">[/]</span><br><span class="line">@group1 = rw</span><br><span class="line">[shiot:/plk]</span><br><span class="line">@group2 = rw</span><br></pre></td></tr></table></figure></p>
 <h2 id="启动svn"><a href="#启动svn" class="headerlink" title="启动svn"></a>启动svn</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>找到svnserve地址，然后执行下列命令</span><br><span class="line"><span class="meta">#</span>find /svn -name svnserve</span><br><span class="line"><span class="meta">#</span>可以不指定端口，默认端口为3690</span><br><span class="line">svnserve -d -r "/svn/shiot" --listen-port 80</span><br></pre></td></tr></table></figure>
+<h2 id="关闭svn"><a href="#关闭svn" class="headerlink" title="关闭svn"></a>关闭svn</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ps -ef|grep svn</span><br><span class="line">kill -9 进程号</span><br><span class="line">--或者是</span><br><span class="line">killall svnserve</span><br></pre></td></tr></table></figure>
       
     </div>
     
@@ -411,6 +412,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/08/17/存储过程之复合游标使用/" rel="prev" title="存储过程之复合游标使用">
+                存储过程之复合游标使用 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -491,7 +496,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-count">33</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -502,7 +507,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-count">9</span>
                   <span class="site-state-item-name">categories</span>
                 </a>
               </div>
@@ -513,7 +518,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-count">18</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -576,7 +581,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#SVN配置信息"><span class="nav-text">SVN配置信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#启动svn"><span class="nav-text">启动svn</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#SVN配置信息"><span class="nav-text">SVN配置信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#启动svn"><span class="nav-text">启动svn</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关闭svn"><span class="nav-text">关闭svn</span></a></li></ol></div>
             
 
           </div>
