@@ -91,7 +91,7 @@
 <meta property="og:site_name" content="道术高深的博客">
 <meta property="og:description" content="概述安装hadoop和hbase高可用需要一些前置安装软件，需要依赖免登陆和Zookeeper。1234安装文件用户名 ：kai安装目录(由于本地安装，分配空间基本都在/home目录下面，看各自需求安装,安装在/opt下最好)：/home/kai/hadoop/home/kai/hbase 修改主机名称12345678910vi /etc/sysconfig/networkHOSTNAME=nod">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-10-19T03:54:14.083Z">
+<meta property="og:updated_time" content="2018-11-08T09:11:08.242Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="大数据一：hadoop和hbase安装">
 <meta name="twitter:description" content="概述安装hadoop和hbase高可用需要一些前置安装软件，需要依赖免登陆和Zookeeper。1234安装文件用户名 ：kai安装目录(由于本地安装，分配空间基本都在/home目录下面，看各自需求安装,安装在/opt下最好)：/home/kai/hadoop/home/kai/hbase 修改主机名称12345678910vi /etc/sysconfig/networkHOSTNAME=nod">
@@ -389,6 +389,7 @@
 <p>(9) 启动hbase进程<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cd /home/kai/hbase/hbase-1.1.3/bin</span><br><span class="line">sh start-hbase.sh</span><br><span class="line"><span class="meta">#</span># 主备都需要启动</span><br><span class="line"><span class="meta">#</span>#（启动主节点，备节点可能没有带起来，看个人情况把）</span><br></pre></td></tr></table></figure></p>
 <p>(10) 登陆web界面查看hbase信息<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.1.3:60010/ </span><br><span class="line"><span class="meta">#</span>Master node01</span><br></pre></td></tr></table></figure></p>
 <p><a href="http://192.168.1.4:60010/" target="_blank" rel="noopener">http://192.168.1.4:60010/</a><br>(11) 测试高可用<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">jps#</span>查询Hmaster进程号</span><br><span class="line">kill -9 123</span><br><span class="line">查看http://192.168.1.4:60010/</span><br><span class="line"><span class="meta">#</span> Master node02</span><br></pre></td></tr></table></figure></p>
+<p>(12)创建软连接<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/bin/</span><br><span class="line">ln -s /home/kai/hadoop/hadoop-2.6.0/bin/hdfs hdfs</span><br></pre></td></tr></table></figure></p>
 
       
     </div>
@@ -429,8 +430,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/10/11/JS正则表达式例子/" rel="next" title="JS正则表达式例子">
-                <i class="fa fa-chevron-left"></i> JS正则表达式例子
+              <a href="/2018/10/11/JS笔记一：正则表达式例子/" rel="next" title="JS笔记一：正则表达式例子">
+                <i class="fa fa-chevron-left"></i> JS笔记一：正则表达式例子
               </a>
             
           </div>
@@ -522,7 +523,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-count">47</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -533,7 +534,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">12</span>
                   <span class="site-state-item-name">categories</span>
                 </a>
               </div>
@@ -544,7 +545,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-count">27</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -627,7 +628,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
