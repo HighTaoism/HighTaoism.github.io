@@ -91,7 +91,7 @@
 <meta property="og:site_name" content="道术高深的博客">
 <meta property="og:description" content="本文是根据scala语言为基础的spark调用">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-10-31T09:37:53.440Z">
+<meta property="og:updated_time" content="2019-02-25T07:19:46.405Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="spark二：简单使用spark">
 <meta name="twitter:description" content="本文是根据scala语言为基础的spark调用">
@@ -361,7 +361,8 @@
       
 
       
-        <h2 id="wordcount例子-RDD"><a href="#wordcount例子-RDD" class="headerlink" title="wordcount例子 RDD"></a>wordcount例子 RDD</h2><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.kai.test</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.apache.spark.rdd.<span class="type">RDD</span></span><br><span class="line"><span class="keyword">import</span> org.apache.spark.sql.<span class="type">SparkSession</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">SparkSessionWithAll</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">main</span></span>(args: <span class="type">Array</span>[<span class="type">String</span>]): <span class="type">Unit</span> = &#123;</span><br><span class="line">    <span class="keyword">val</span> ss = <span class="type">SparkSession</span>.builder.master(<span class="string">"local[1]"</span>)</span><br><span class="line">      .appName(<span class="string">"wordCount"</span>).getOrCreate()</span><br><span class="line">    <span class="keyword">val</span> file :<span class="type">RDD</span>[<span class="type">String</span>]= ss.sparkContext</span><br><span class="line">      .textFile(<span class="string">"D:\\10.GigData\\test_file\\test01.txt"</span>);</span><br><span class="line">    <span class="comment">//每一行数据进行分割</span></span><br><span class="line">    <span class="keyword">val</span> word :<span class="type">RDD</span>[<span class="type">String</span>] = file.flatMap(_.split(<span class="string">" "</span>))</span><br><span class="line">    <span class="comment">//每个单词出现一次</span></span><br><span class="line">    <span class="keyword">val</span> wordone :<span class="type">RDD</span>[(<span class="type">String</span>,<span class="type">Int</span>)] = word.map((_,<span class="number">1</span>))</span><br><span class="line">    <span class="comment">//单词进行计算</span></span><br><span class="line">    <span class="keyword">val</span> wordcount :<span class="type">RDD</span>[(<span class="type">String</span>,<span class="type">Int</span>)] = wordone.reduceByKey(_+_)</span><br><span class="line">    <span class="comment">//单词个数进行排序--》以第二个字段进行排序</span></span><br><span class="line">    <span class="keyword">val</span> sortRDD :<span class="type">RDD</span>[(<span class="type">String</span>,<span class="type">Int</span>)] = wordcount.sortBy(tuple=&gt;tuple._2,<span class="literal">true</span>)</span><br><span class="line">    <span class="comment">//false :升序  true：降序</span></span><br><span class="line">    <span class="comment">//保存结果</span></span><br><span class="line">    <span class="comment">//sortRDD.saveAsTextFile("D:\\10.GigData\\test_file\\test01_result");</span></span><br><span class="line">    print(<span class="string">"返回结果为："</span>+sortRDD.collect().toBuffer)</span><br><span class="line">    ss.sparkContext.stop()</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        <h2 id="wordcount例子-RDD-本地执行例子"><a href="#wordcount例子-RDD-本地执行例子" class="headerlink" title="wordcount例子 RDD(本地执行例子)"></a>wordcount例子 RDD(本地执行例子)</h2><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.kai.test</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.apache.spark.rdd.<span class="type">RDD</span></span><br><span class="line"><span class="keyword">import</span> org.apache.spark.sql.<span class="type">SparkSession</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">SparkSessionWithAll</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">main</span></span>(args: <span class="type">Array</span>[<span class="type">String</span>]): <span class="type">Unit</span> = &#123;</span><br><span class="line">    <span class="keyword">val</span> ss = <span class="type">SparkSession</span>.builder.master(<span class="string">"local[1]"</span>)</span><br><span class="line">      .appName(<span class="string">"wordCount"</span>).getOrCreate()</span><br><span class="line">    <span class="keyword">val</span> file :<span class="type">RDD</span>[<span class="type">String</span>]= ss.sparkContext</span><br><span class="line">      .textFile(<span class="string">"D:\\10.GigData\\test_file\\test01.txt"</span>);</span><br><span class="line">    <span class="comment">//每一行数据进行分割</span></span><br><span class="line">    <span class="keyword">val</span> word :<span class="type">RDD</span>[<span class="type">String</span>] = file.flatMap(_.split(<span class="string">" "</span>))</span><br><span class="line">    <span class="comment">//每个单词出现一次</span></span><br><span class="line">    <span class="keyword">val</span> wordone :<span class="type">RDD</span>[(<span class="type">String</span>,<span class="type">Int</span>)] = word.map((_,<span class="number">1</span>))</span><br><span class="line">    <span class="comment">//单词进行计算</span></span><br><span class="line">    <span class="keyword">val</span> wordcount :<span class="type">RDD</span>[(<span class="type">String</span>,<span class="type">Int</span>)] = wordone.reduceByKey(_+_)</span><br><span class="line">    <span class="comment">//单词个数进行排序--》以第二个字段进行排序</span></span><br><span class="line">    <span class="keyword">val</span> sortRDD :<span class="type">RDD</span>[(<span class="type">String</span>,<span class="type">Int</span>)] = wordcount.sortBy(tuple=&gt;tuple._2,<span class="literal">true</span>)</span><br><span class="line">    <span class="comment">//false :升序  true：降序</span></span><br><span class="line">    <span class="comment">//保存结果</span></span><br><span class="line">    <span class="comment">//sortRDD.saveAsTextFile("D:\\10.GigData\\test_file\\test01_result");</span></span><br><span class="line">    print(<span class="string">"返回结果为："</span>+sortRDD.collect().toBuffer)</span><br><span class="line">    ss.sparkContext.stop()</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="提交spark的jar包任务"><a href="#提交spark的jar包任务" class="headerlink" title="提交spark的jar包任务"></a>提交spark的jar包任务</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">/tomcat/IOT-SPARK/spark-client/spark-2.1.1-bin-hadoop2.6/bin/spark-submit \</span><br><span class="line">--class com.cmp.newBill.clean.BillCleanApp \</span><br><span class="line">--master yarn \</span><br><span class="line">--deploy-mode cluster \</span><br><span class="line">--driver-memory 4g \</span><br><span class="line">--executor-memory 1G \</span><br><span class="line">--num-executors 10 \</span><br><span class="line">--executor-cores 1 \</span><br><span class="line">/tomcat/IOT-OFFLINE/app/offline_process_new-1.17-jar-with-dependencies.jar \</span><br><span class="line">/offline/src/20190123bak/ /offline/newclean/20190123/ \</span><br><span class="line">iot_gprs,iot_sms,iov_gprs,iov_sms,iov_voice jdbc:oracle:thin:@172.17.131.209:1522:iot \</span><br><span class="line">oracle.jdbc.driver.OracleDriver shiot_log Jaker_300</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -444,6 +445,11 @@
           
 
   
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC80MzQ1MC8xOTk5MA=="></div>
+    </div>
+
+  
 
 
 
@@ -495,7 +501,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">49</span>
+                  <span class="site-state-item-count">68</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -506,7 +512,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-count">13</span>
                   <span class="site-state-item-name">categories</span>
                 </a>
               </div>
@@ -517,7 +523,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">27</span>
+                  <span class="site-state-item-count">33</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -580,7 +586,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#wordcount例子-RDD"><span class="nav-text">wordcount例子 RDD</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#wordcount例子-RDD-本地执行例子"><span class="nav-text">wordcount例子 RDD(本地执行例子)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#提交spark的jar包任务"><span class="nav-text">提交spark的jar包任务</span></a></li></ol></div>
             
 
           </div>
@@ -765,6 +771,17 @@
 
 
 
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
   
 
 
